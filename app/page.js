@@ -27,7 +27,11 @@ export default function Home() {
             </a>
           </div>
           <div>
-            <ButtonLogin isLoggedIn={isLoggedIn} msg="Log in" />
+            <ButtonLogin
+              isLoggedIn={isLoggedIn}
+              msg="Log in"
+              extraStyle="bg-[#F9B233] text-white hover:bg-[#e2a12c]"
+            />
           </div>
         </div>
       </section>
@@ -41,12 +45,16 @@ export default function Home() {
             create a feedback board in minutes, prioritize features, and build
             products your customer will love
           </div>
-          <ButtonLogin isLoggedIn={isLoggedIn} msg="Start 30 day trial" />
+          <ButtonLogin
+            isLoggedIn={isLoggedIn}
+            msg="Start 30 day trial"
+            extraStyle="bg-[#F9B233] text-white hover:bg-[#e2a12c]"
+          />
         </div>
         <Image
           src={productDemo}
           alt="Product demo"
-          className="w-full rounded-2xl"
+          className="w-80 rounded-2xl "
         />
       </section>
       {/* Pricing */}
@@ -92,7 +100,7 @@ export default function Home() {
                 <ButtonLogin
                   isLoggedIn={isLoggedIn}
                   msg="Buy Now"
-                  extraStyle="w=full"
+                  extraStyle="w-full bg-[#F9B233] text-white hover:bg-[#e2a12c]"
                 />
               </div>
             </div>
