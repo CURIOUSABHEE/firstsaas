@@ -111,9 +111,19 @@ export default function Home() {
           </h2>
           <ul>
             {[
-              { question: "What is your name?", answer: "My name is Abhishek" },
-              { question: "Where do you live?", answer: "I live in thane" },
-              { question: "what do you do?", answer: "I do business" },
+              {
+                question: "How do I get refund ?",
+                answer: "Email us on jamdadeabhishek039@gmail.com",
+              },
+              {
+                question: "Do you accept paypal ?",
+                answer: "Not right now, but we will soon add payments option",
+              },
+              {
+                question: "what new features we can expect ?",
+                answer:
+                  "We cannot disclose but we will ship some great features",
+              },
             ].map((qa) => (
               <FAQListItem key={qa.question} qa={qa} />
             ))}
