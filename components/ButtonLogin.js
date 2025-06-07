@@ -1,14 +1,13 @@
 import Link from "next/link";
 
-const ButtonLogin = ({ isLoggedIn, name, children }) => {
+const ButtonLogin = ({ isLoggedIn, msg, children, extraStyle = "" }) => {
   // function loginNow(props){
   //     props.isLoggedIn =! props.isLoggedIn
   // }
   if (isLoggedIn) {
     return (
-      <Link href="/dashboard" className="btn btn-primary">
-        Welcome {name} 👋🏽
-        {children}
+      <Link href="/dashboard" className={"btn btn-primary " + extraStyle}>
+        {msg}
       </Link>
     );
   } else {
