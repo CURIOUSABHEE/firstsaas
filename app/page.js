@@ -1,5 +1,7 @@
 import ButtonLogin from "@/components/ButtonLogin";
 import FAQListItem from "@/components/FAQListItem";
+import Image from "next/image";
+import productDemo from "./productDemo.jpeg";
 
 export default function Home() {
   let isLoggedIn = true;
@@ -30,15 +32,22 @@ export default function Home() {
         </div>
       </section>
       {/* Hero */}
-      <section className="text-center py-32 px-8 max-w-3xl mx-auto">
-        <h1 className="text-4xl font-extrabold mb-6">
-          Collect customer feedback to build better products
-        </h1>
-        <div className="opacity-80 mb-10">
-          create a feedback board in minutes, prioritize features, and build
-          products your customer will love
+      <section className="text-center lg:text-left lg:items-center py-32 px-8 max-w-5xl mx-auto flex flex-col justify-between gap-14 lg:flex-row">
+        <div>
+          <h1 className="text-4xl font-extrabold mb-6">
+            Collect customer feedback to build better products
+          </h1>
+          <div className="opacity-80 mb-10">
+            create a feedback board in minutes, prioritize features, and build
+            products your customer will love
+          </div>
+          <ButtonLogin isLoggedIn={isLoggedIn} msg="Start 30 day trial" />
         </div>
-        <ButtonLogin isLoggedIn={isLoggedIn} msg="Start 30 day trial" />
+        <Image
+          src={productDemo}
+          alt="Product demo"
+          className="w-full rounded-2xl"
+        />
       </section>
       {/* Pricing */}
       <section className="bg-base-200" id="pricing">
