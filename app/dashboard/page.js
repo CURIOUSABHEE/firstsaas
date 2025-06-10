@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ButtonLogout from "@/components/ButtonLogout";
 
 export default function dashboard() {
   return (
@@ -8,6 +9,7 @@ export default function dashboard() {
         <Link href="/" className="btn btn-primary">
           HOME
         </Link>
+        <ButtonLogout />
       </section>
     </main>
   );
