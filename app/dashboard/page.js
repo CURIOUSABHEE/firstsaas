@@ -1,15 +1,17 @@
-import Link from "next/link";
 import ButtonLogout from "@/components/ButtonLogout";
+import FormNewBoard from "@/components/FormNewBoard";
 
 export default function dashboard() {
   return (
-    <main>
-      <section className="text-center py-32 px-8 max-w-3xl mx-auto">
-        <h1>Private dashboard </h1>
-        <Link href="/" className="btn btn-primary">
-          HOME
-        </Link>
-        <ButtonLogout />
+    <main className="bg-base-200 min-h-screen">
+      {/* HEADER */}
+      <section className="bg-base-100 px-5 py-3 flex justify-end ">
+        <div className="">
+          <ButtonLogout />
+        </div>
+      </section>
+      <section className="max-w-5xl mx-auto px-5 py-12 ">
+        <FormNewBoard />
       </section>
     </main>
   );
