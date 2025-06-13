@@ -2,13 +2,12 @@
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const FormNewBoard = () => {
   const router = useRouter();
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,21 +15,19 @@ const FormNewBoard = () => {
     if (isLoading) return;
 
     setIsLoading(true);
-    setError("");
-    setSuccess("");
 
     try {
       const response = await axios.post("/api/board", { name });
 
       console.log("Board created:", response.data);
       setName("");
-      setSuccess("Board created successfully!");
+
+      toast.success("Board created");
       router.refresh();
     } catch (e) {
-      console.error("Error creating board:", e);
-      setError(
-        e.response?.data?.error || e.message || "Failed to create board"
-      );
+      const errorMessage =
+        e.response.data.error || e.message || "Something went wrong";
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -44,18 +41,6 @@ const FormNewBoard = () => {
       <div>
         <p className="font-extrabold text-lg">Create new feedback board</p>
       </div>
-
-      {error && (
-        <div className="alert alert-error">
-          <span>{error}</span>
-        </div>
-      )}
-
-      {success && (
-        <div className="alert alert-success">
-          <span>{success}</span>
-        </div>
-      )}
 
       <div>
         <label className="form-control w-full">

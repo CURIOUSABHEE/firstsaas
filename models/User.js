@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
   boards: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Boards",
+      ref: "Board",
     },
   ],
 });
