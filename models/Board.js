@@ -19,6 +19,6 @@ const boardSchema = new mongoose.Schema(
 );
 
 // Fix: Use "Board" for both the model name and the check
-const Board = mongoose.models.Board || mongoose.model("Boards", boardSchema);
+const Board = mongoose.models.Board || mongoose.model("Board", boardSchema);
 
 export default Board;

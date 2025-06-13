@@ -1,8 +1,10 @@
 "use client";
 import { useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const FormNewBoard = () => {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -23,6 +25,7 @@ const FormNewBoard = () => {
       console.log("Board created:", response.data);
       setName("");
       setSuccess("Board created successfully!");
+      router.refresh();
     } catch (e) {
       console.error("Error creating board:", e);
       setError(
