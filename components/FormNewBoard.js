@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import axios from "axios";
 
 const FormNewBoard = () => {
   const [name, setName] = useState("");
@@ -17,24 +18,16 @@ const FormNewBoard = () => {
     setSuccess("");
 
     try {
-      const response = await fetch("/api/board", {
-        method: "POST",
-        body: JSON.stringify({ name }),
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await axios.post("/api/board", { name });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || `HTTP error! status: ${response.status}`);
-      }
-
-      console.log("Board created:", data);
+      console.log("Board created:", response.data);
       setName("");
       setSuccess("Board created successfully!");
     } catch (e) {
       console.error("Error creating board:", e);
-      setError(e.message || "Failed to create board");
+      setError(
+        e.response?.data?.error || e.message || "Failed to create board"
+      );
     } finally {
       setIsLoading(false);
     }
