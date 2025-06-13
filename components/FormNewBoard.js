@@ -26,7 +26,7 @@ const FormNewBoard = () => {
       router.refresh();
     } catch (e) {
       const errorMessage =
-        e.response.data.error || e.message || "Something went wrong";
+        e.response?.data?.error || e.message || "Something went wrong";
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);
