@@ -3,7 +3,7 @@ import Board from "@/models/Board";
 import { redirect } from "next/navigation";
 
 const getBoard = async (boardId) => {
-  await connectMongo;
+  await connectMongo();
 
   const board = await Board.findById(boardId);
 

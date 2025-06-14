@@ -3,6 +3,7 @@ import connectMongo from "@/libs/mongoose";
 import Board from "@/models/Board";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import CardBoardLink from "@/components/CardBoardLink";
 
 const getBoard = async (boardId) => {
   const session = await auth();
@@ -45,6 +46,7 @@ export default async function FeedbackBoard({ params }) {
       </section>
       <section className="max-w-5xl mx-auto px-5 py-3 space-y-12">
         <h1 className="font-extrabold text-xl mb-4">{board.name}</h1>
+        <CardBoardLink boardId={board._id.toString()} />
       </section>
     </main>
   );
