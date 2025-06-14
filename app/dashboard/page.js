@@ -4,6 +4,7 @@ import FormNewBoard from "@/components/FormNewBoard";
 import connectMongo from "@/libs/mongoose";
 import User from "@/models/User";
 import Board from "@/models/Board";
+import Link from "next/link";
 
 async function getUser() {
   const session = await auth();
@@ -24,8 +25,8 @@ export default async function dashboard() {
     return (
       <main className="bg-base-200 min-h-screen">
         {/* HEADER */}
-        <section className="bg-base-100 px-5 py-3 flex justify-end ">
-          <div className="">
+        <section className="bg-base-100">
+          <div className="max-w-5xl mx-auto px-5 py-3 flex justify-end ">
             <ButtonLogout />
           </div>
         </section>
@@ -42,9 +43,9 @@ export default async function dashboard() {
                 return (
                   <li
                     key={board._id}
-                    className="bg-base-100 p-4 mb-2 rounded-2xl"
+                    className="bg-base-100 p-4 mb-2 rounded-2xl hover:bg-neutral hover:text-neutral-content duration-500"
                   >
-                    {board.name}
+                    <Link href={`/dashboard/b/${board._id}`}>{board.name}</Link>
                   </li>
                 );
               })}
