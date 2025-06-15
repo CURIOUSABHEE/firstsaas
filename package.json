@@ -23,7 +23,8 @@
     "react-hot-toast": "^2.5.2",
     "resend": "^4.5.2",
     "stripe": "^18.2.1",
-    "tailwindcss": "^4.1.8"
+    "tailwindcss": "^4.1.8",
+    "zod": "^3.25.64"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
