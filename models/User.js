@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   hasAccess: {
-    type: boolean,
+    type: Boolean,
     default: false,
   },
   customerId: {
