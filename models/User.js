@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { boolean } from "zod";
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -11,6 +12,16 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
   },
   image: {
+    type: String,
+  },
+  hasAccess: {
+    type: boolean,
+    default: false,
+  },
+  customerId: {
+    type: String,
+  },
+  planId: {
     type: String,
   },
   boards: [
