@@ -186,9 +186,7 @@ export default async function Home() {
                     <div className="text-sm opacity-70">{testimonial.role}</div>
                   </div>
                 </div>
-                <div className="text-gray-700 italic">
-                  "{testimonial.quote}"
-                </div>
+                <div className="text-gray-700 italic">{testimonial.quote}</div>
                 <div className="flex text-[#F9B233] mt-4">{"★".repeat(5)}</div>
               </div>
             ))}

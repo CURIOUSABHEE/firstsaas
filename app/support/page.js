@@ -51,7 +51,7 @@ export default async function support() {
                 </div>
                 <div className="collapse-content">
                   <p className="text-base-content/70">
-                    Click the "New Board" button on your dashboard and enter a
+                    Click the New Board button on your dashboard and enter a
                     name for your board. You can start adding tasks immediately
                     after creation.
                   </p>
@@ -150,7 +150,7 @@ export default async function support() {
                   href="/changelog"
                   className="text-primary hover:underline"
                 >
-                  What's New
+                  {"What's New"}
                 </Link>
               </li>
               <li>

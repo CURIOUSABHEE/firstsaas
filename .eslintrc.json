@@ -1,11 +1,12 @@
 {
-    "extends": [
+  "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:jsx-a11y/recommended"
   ],
   "rules": {
-    "no-unused-vars":"warn"
+    "no-unused-vars": "warn",
+    "react/no-unescaped-entities": "off"
   }
 }
