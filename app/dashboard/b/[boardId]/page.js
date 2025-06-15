@@ -4,10 +4,17 @@ import Board from "@/models/Board";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import CardBoardLink from "@/components/CardBoardLink";
+import ButtonDeleteBoard from "@/components/ButtonDeleteBoard";
+import { isValidObjectId } from "mongoose";
 
 const getBoard = async (boardId) => {
   const session = await auth();
   await connectMongo();
+
+  // Check if boardId is valid
+  if (!boardId || !isValidObjectId(boardId)) {
+    redirect("/dashboard");
+  }
 
   const board = await Board.findOne({
     _id: boardId,
@@ -21,8 +28,15 @@ const getBoard = async (boardId) => {
 };
 
 export default async function FeedbackBoard({ params }) {
-  const { boardId } = params;
+  const { boardId } = await params;
+
+  // Check if boardId exists in params
+  if (!boardId) {
+    redirect("/dashboard");
+  }
+
   const board = await getBoard(boardId);
+
   return (
     <main className="bg-base-200 min-h-screen">
       <section className="bg-base-100">
@@ -47,6 +61,7 @@ export default async function FeedbackBoard({ params }) {
       <section className="max-w-5xl mx-auto px-5 py-3 space-y-12">
         <h1 className="font-extrabold text-xl mb-4">{board.name}</h1>
         <CardBoardLink boardId={board._id.toString()} />
+        <ButtonDeleteBoard boardId={board._id.toString()} />
       </section>
     </main>
   );
