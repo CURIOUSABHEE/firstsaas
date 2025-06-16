@@ -35,6 +35,13 @@ export async function POST(req) {
 
     console.log("Session object:", session);
     const user = await User.findOne({ email: session.user.email });
+
+    if (!user.hasAccess) {
+      return NextResponse.json(
+        { error: "Please subscribe first" },
+        { status: 403 }
+      );
+    }
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
