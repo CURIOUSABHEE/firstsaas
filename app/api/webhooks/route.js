@@ -53,6 +53,20 @@ export async function POST(req) {
         console.error("Error updating user:", err);
         return NextResponse.json({ error: err.message }, { status: 500 });
       }
+    } else if (type === "customer.subscription.deleted") {
+      //revoke the access to the product
+      try {
+        await connectMongo();
+        const user = await User.findOne({ customerId: data.object.customer });
+
+        user.hasAccess = false;
+        await user.save();
+
+        return NextResponse.json({ received: true });
+      } catch (err) {
+        console.error("Error updating user on subscription deletion:", err);
+        return NextResponse.json({ error: err.message }, { status: 500 });
+      }
     }
 
     console.log(`Unhandled event type: ${type}`);
