@@ -3,10 +3,13 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useParams } from "next/navigation";
 
 const FormAddPost = () => {
   const router = useRouter();
+  const params = useParams();
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -17,12 +20,25 @@ const FormAddPost = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("/api/board", { title });
+      // Get boardId from URL params (assuming you're on a board page)
+      const boardId = params.boardId; // or however you get the current board ID
+
+      if (!boardId) {
+        toast.error("Board ID is missing");
+        return;
+      }
+
+      // Call the correct API endpoint with correct data structure
+      const response = await axios.post(`/api/post?boardId=${boardId}`, {
+        title: title, // Use 'title' not 'name'
+        description: description,
+      });
 
       console.log("Post created:", response.data);
       setTitle("");
+      setDescription("");
 
-      toast.success("Post created");
+      toast.success("Post created successfully!");
       router.refresh();
     } catch (e) {
       const errorMessage =
@@ -35,7 +51,7 @@ const FormAddPost = () => {
 
   return (
     <form
-      className="bg-base-100 p-8 rounded-3xl space-y-8"
+      className="bg-base-100 p-8 rounded-3xl space-y-8 w-full md:w-96 shrink-0"
       onSubmit={handleSubmit}
     >
       <div>
@@ -58,7 +74,13 @@ const FormAddPost = () => {
         </label>
         <fieldset className="fieldset">
           <legend className="fieldset-legend font-bold">Description</legend>
-          <textarea className="textarea h-24" placeholder="Bio"></textarea>
+          <textarea
+            required
+            className="textarea h-24"
+            placeholder="Enter description..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
         </fieldset>
       </div>
 

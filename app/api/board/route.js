@@ -3,12 +3,39 @@ import { auth } from "@/auth";
 import connectMongo from "@/libs/mongoose";
 import User from "@/models/User";
 import Board from "@/models/Board";
-import { error } from "console";
 
 export async function POST(req) {
   try {
-    const body = await req.json();
-    if (!body.name) {
+    // Log the raw request details
+    console.log("=== REQUEST DEBUG START ===");
+    console.log("Request method:", req.method);
+    console.log("Request headers:", Object.fromEntries(req.headers.entries()));
+    console.log("Content-Type:", req.headers.get("content-type"));
+
+    // Try to parse the body
+    let body;
+    try {
+      body = await req.json();
+      console.log("Successfully parsed JSON body:", body);
+      console.log("Body type:", typeof body);
+      console.log("Body keys:", Object.keys(body || {}));
+      console.log("Body.name:", body?.name);
+      console.log("Body.name type:", typeof body?.name);
+      console.log("Body.name length:", body?.name?.length);
+      console.log("Body.name truthy:", !!body?.name);
+    } catch (parseError) {
+      console.error("Failed to parse JSON:", parseError);
+      return NextResponse.json(
+        { error: "Invalid JSON in request body" },
+        { status: 400 }
+      );
+    }
+
+    console.log("=== REQUEST DEBUG END ===");
+
+    // Check if name exists and is not empty
+    if (!body || !body.name || body.name.trim() === "") {
+      console.log("Name validation failed - body:", body);
       return NextResponse.json(
         { error: "Board name is required" },
         { status: 400 }
@@ -33,8 +60,11 @@ export async function POST(req) {
     await connectMongo();
     console.log("Mongo connected");
 
-    console.log("Session object:", session);
     const user = await User.findOne({ email: session.user.email });
+
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
 
     if (!user.hasAccess) {
       return NextResponse.json(
@@ -42,19 +72,19 @@ export async function POST(req) {
         { status: 403 }
       );
     }
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
 
     const board = await Board.create({
       userId: user._id,
-      name: body.name,
+      name: body.name.trim(), // Trim whitespace
     });
 
     user.boards.push(board._id);
     await user.save();
 
-    return NextResponse.json({ message: "Board created successfully" });
+    return NextResponse.json({
+      message: "Board created successfully",
+      board: { id: board._id, name: board.name },
+    });
   } catch (e) {
     console.error("Error creating board:", e);
     return NextResponse.json({ error: e.message }, { status: 500 });
@@ -78,18 +108,22 @@ export async function DELETE(req) {
       return NextResponse.json({ error: "Not authorised" }, { status: 401 });
     }
 
+    await connectMongo();
+
     await Board.deleteOne({
       _id: boardId,
       userId: session?.user?.id,
     });
 
     const user = await User.findById(session?.user?.id);
-    user.boards = user.boards.filter((id) => id.toString() !== boardId);
-
-    await user.save();
+    if (user) {
+      user.boards = user.boards.filter((id) => id.toString() !== boardId);
+      await user.save();
+    }
 
     return NextResponse.json({});
   } catch (e) {
+    console.error("Error deleting board:", e);
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }

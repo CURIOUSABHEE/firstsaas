@@ -25,14 +25,18 @@ export default async function PublicFeedbackBoard({ params }) {
   const data = await getBoard(boardId);
   const { board, posts } = data;
   return (
-    <main className="min-h-screen bg-base-200 flex">
-      {board.name}(public)
-      <FormAddPost boardId={boardId} />
-      <ul>
-        {posts.map((post) => (
-          <CardPost key={post._id} post={post} />
-        ))}
-      </ul>
+    <main className="min-h-screen bg-base-200 ">
+      <section className="max-w-5xl mx-auto p-5">
+        <h1 className="font-bold text-lg">{board.name}</h1>
+      </section>
+      <section className="max-w-5xl mx-auto px-5 flex flex-col md:flex-row gap-8 pb-12">
+        <FormAddPost boardId={boardId} />
+        <ul className="space-y-4 flex-grow">
+          {posts.map((post) => (
+            <CardPost key={post._id} post={post} />
+          ))}
+        </ul>
+      </section>
     </main>
   );
 }
