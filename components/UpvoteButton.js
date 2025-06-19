@@ -1,36 +1,33 @@
 "use client";
+import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-export default function UpvoteButton({
-  postId,
-  initialVotesCount = 0,
-  initialHasVoted = false,
-}) {
+export default function UpvoteButton({ postId, initialVotesCount = 0 }) {
   const [isVoting, setIsVoting] = useState(false);
   const [votesCount, setVotesCount] = useState(initialVotesCount);
-  const [hasVoted, setHasVoted] = useState(initialHasVoted);
+  const [hasVoted, setHasVoted] = useState(false);
 
   const handleVote = async () => {
     if (isVoting) return;
 
     setIsVoting(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      const method = hasVoted ? "DELETE" : "POST";
-      // await axios[method.toLowerCase()](`/api/vote?postId=${postId}`);
-
-      if (!hasVoted) {
-        setVotesCount((current) => current + 1);
-        toast.success("Upvoted");
-      } else {
+      if (hasVoted) {
+        await axios.delete(`/api/vote?postId=${postId}`);
+        setHasVoted(false);
         setVotesCount((current) => current - 1);
         toast.error("Removed upvote");
+      } else {
+        await axios.post(`/api/vote?postId=${postId}`);
+        setHasVoted(true);
+        setVotesCount((current) => current + 1);
+        toast.success("Upvoted");
       }
-
-      setHasVoted(!hasVoted);
     } catch (error) {
-      console.error("Failed to vote. Please try again.");
+      const errorMessage =
+        error.response?.data?.error || error.message || "Something went wrong";
+      toast.error(errorMessage);
     } finally {
       setIsVoting(false);
     }
@@ -48,14 +45,14 @@ export default function UpvoteButton({
       disabled={isVoting}
       aria-label={hasVoted ? "Remove upvote" : "Upvote post"}
       className={`
-        relative group transition-all duration-150 ease-out
-        w-12 h-12 rounded border flex flex-col items-center justify-center gap-0.5
+        relative group transition-all duration-200 ease-out
+        w-12 h-12 rounded border flex flex-col items-center justify-center gap-0.5 hover:-translate-y-0.5
         ${
           isVoting
             ? "bg-gray-50 border-gray-200 cursor-not-allowed"
             : hasVoted
               ? "bg-indigo-600 border-indigo-600 text-white"
-              : "bg-white border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-gray-50"
+              : "bg-white border-gray-300 text-gray-600  hover:bg-gray-50 hover:border-base-content/50 "
         }
       `}
     >
@@ -64,7 +61,7 @@ export default function UpvoteButton({
       ) : (
         <>
           <svg
-            className="w-4 h-4"
+            className="w-4 h-4 group-hover:-translate-y-1 duration-1000 "
             fill={hasVoted ? "currentColor" : "none"}
             stroke="currentColor"
             viewBox="0 0 24 24"

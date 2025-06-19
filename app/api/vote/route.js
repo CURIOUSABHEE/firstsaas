@@ -27,12 +27,11 @@ export async function POST(req) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
-    // Increment the votes count
-    post.votesCount += 1;
+    post.votesCount = (post.votesCount || 0) + 1;
     await post.save();
 
     return NextResponse.json(
-      { message: "Vote added successfully", post },
+      { message: "Vote added successfully", votesCount: post.votesCount },
       { status: 200 }
     );
   } catch (error) {
@@ -67,17 +66,16 @@ export async function DELETE(req) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
-    // Increment the votes count
-    post.votesCount -= 1;
+    post.votesCount = Math.max((post.votesCount || 0) - 1, 0);
     await post.save();
 
     return NextResponse.json(
-      { message: "Vote removed successfully", post },
+      { message: "Vote removed successfully", votesCount: post.votesCount },
       { status: 200 }
     );
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to add vote", details: error.message },
+      { error: "Failed to remove vote", details: error.message },
       { status: 500 }
     );
   }
