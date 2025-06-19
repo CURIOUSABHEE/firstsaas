@@ -27,6 +27,10 @@ const postSchema = new mongoose.Schema(
       ref: "User",
       // Optional if the post can be created without a logged-in user
     },
+    votesCount: {
+      type: Number,
+      default: 0, // Default to 0 votes
+    },
   },
   {
     timestamps: true, // Adds createdAt and updatedAt fields

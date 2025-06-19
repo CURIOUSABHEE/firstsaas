@@ -3,7 +3,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Span } from "next/dist/trace";
+//import { Span } from "next/dist/trace";
 
 const ButtonDeletePost = ({ postId }) => {
   const router = useRouter();
