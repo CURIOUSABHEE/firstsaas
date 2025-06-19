@@ -1,28 +1,33 @@
 "use client";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function UpvoteButton({ postId, initialVotesCount = 0 }) {
+  const localStorageKeyName = `hasVoted-${postId}`;
+
   const [isVoting, setIsVoting] = useState(false);
   const [votesCount, setVotesCount] = useState(initialVotesCount);
   const [hasVoted, setHasVoted] = useState(false);
 
+  useEffect(() => {
+    setHasVoted(localStorage.getItem(localStorageKeyName) === "true");
+  }, []);
   const handleVote = async () => {
     if (isVoting) return;
 
     setIsVoting(true);
     try {
       if (hasVoted) {
-        await axios.delete(`/api/vote?postId=${postId}`);
         setHasVoted(false);
         setVotesCount((current) => current - 1);
-        toast.error("Removed upvote");
+        await axios.delete(`/api/vote?postId=${postId}`);
+        localStorage.removeItem(localStorageKeyName);
       } else {
-        await axios.post(`/api/vote?postId=${postId}`);
         setHasVoted(true);
         setVotesCount((current) => current + 1);
-        toast.success("Upvoted");
+        await axios.post(`/api/vote?postId=${postId}`);
+        localStorage.setItem(localStorageKeyName, "true");
       }
     } catch (error) {
       const errorMessage =

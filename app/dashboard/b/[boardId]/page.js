@@ -26,7 +26,7 @@ const getData = async (boardId) => {
   if (!board) {
     redirect("/dashboard");
   }
-  const posts = await Post.find({ boardId }).sort({ createdAt: -1 });
+  const posts = await Post.find({ boardId }).sort({ votesCounter: -1 });
   return {
     board,
     posts,
