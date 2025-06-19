@@ -69,3 +69,70 @@ export async function POST(req) {
     );
   }
 }
+
+export async function DELETE(req) {
+  try {
+    // Parse request
+    const body = await req.json();
+    const { searchParams } = req.nextUrl;
+    const postId = searchParams.get("postId");
+
+    // Validate required fields
+    if (!postId) {
+      return NextResponse.json(
+        { error: "PostId is required" },
+        { status: 400 }
+      );
+    }
+
+    // Connect to database
+    await connectMongo();
+
+    // Get user session
+    const session = await auth();
+
+    const user = await User.findById(session?.user?.id);
+
+    // Check if user is authenticated
+    if (!user.hasAccess) {
+      return NextResponse.json(
+        { error: "Please Subscribe first" },
+        { status: 403 }
+      );
+    }
+
+    // Check if post exists and belongs to user
+    // const post = await Post.findOne({ _id: postId, userId: session?.user?.id });
+    // if (!post) {
+    //   return NextResponse.json(
+    //     { error: "Post not found or unauthorized" },
+    //     { status: 404 }
+    //   );
+    // }
+    const post = await Post.findById(postId);
+    if (!post) {
+      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+    }
+
+    // Check if user has access to the board
+    if (!user.boards.includes(post.boardId.toString())) {
+      return NextResponse.json(
+        { error: "Unauthorized to delete this post" },
+        { status: 401 }
+      );
+    }
+
+    // Delete post
+    await Post.deleteOne({ _id: postId });
+
+    return NextResponse.json(
+      { message: "Post deleted successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to delete post", details: error.message },
+      { status: 500 }
+    );
+  }
+}
