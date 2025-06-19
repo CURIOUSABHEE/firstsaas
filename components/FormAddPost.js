@@ -51,7 +51,7 @@ const FormAddPost = () => {
 
   return (
     <form
-      className="bg-base-100 p-8 rounded-3xl space-y-8 w-full md:w-96 shrink-0"
+      className="bg-base-100 p-8 rounded-3xl space-y-8 w-full md:w-96 shrink-0 md:sticky top-16"
       onSubmit={handleSubmit}
     >
       <div>
