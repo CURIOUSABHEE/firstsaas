@@ -1,3 +1,5 @@
+import ButtonDeletePost from "./ButtonDeletePost";
+
 const CardPostAdmin = ({ post, onDelete, onEdit }) => {
   return (
     <li
@@ -10,7 +12,7 @@ const CardPostAdmin = ({ post, onDelete, onEdit }) => {
           {post.description}
         </div>
       </div>
-      <button className="btn">Delete</button>
+      <ButtonDeletePost postId={post._id.toString()} />
     </li>
   );
 };
