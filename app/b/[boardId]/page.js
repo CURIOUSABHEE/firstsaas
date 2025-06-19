@@ -35,9 +35,6 @@ export default async function PublicFeedbackBoard({ params }) {
           {posts.map((post) => (
             <CardPost key={post._id} post={post} />
           ))}
-          {posts.map((post) => (
-            <CardPost key={post._id} post={post} />
-          ))}
         </ul>
       </section>
     </main>

@@ -1,4 +1,4 @@
-import { NextResponse } from "next/navigation";
+import { NextResponse } from "next/server";
 import connectMongo from "@/libs/mongoose";
 import Post from "@/models/Post";
 import { auth } from "@/auth";
@@ -72,7 +72,7 @@ export async function DELETE(req) {
     await post.save();
 
     return NextResponse.json(
-      { message: "Vote added successfully", post },
+      { message: "Vote removed successfully", post },
       { status: 200 }
     );
   } catch (error) {
